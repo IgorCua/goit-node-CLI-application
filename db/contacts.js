@@ -7,10 +7,6 @@ const __filePath = fileURLToPath(import.meta.url);
 const contactsPath = path.join(__filePath, '..', 'contacts.json');
 
 
-// console.log('contacts')
-// console.log('contactspath', contactsPath)
-// console.log(path.join(__dirname, 'contacts.json'));
-// TODO: document each function
 async function listContacts() {
   return readFile(contactsPath)
     .then(data => {
@@ -29,7 +25,6 @@ async function getContactById(contactId) {
 }
 
 async function removeContact(contactId) {
-    // console.log('removeContact');
     const contactsArr = await listContacts();
     const getContactIndex = contactsArr.findIndex(elem => elem.id === contactId);
     const deletedContact = contactsArr.splice(getContactIndex, 1);

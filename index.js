@@ -1,18 +1,12 @@
 import { Command } from 'commander';
-import * as contacts from './db/contacts.js';
 import { 
     listContacts, 
     getContactById, 
     removeContact, 
     addContact 
 } from './db/contacts.js';
-import { get } from 'http';
-// const fs = require('fs').promises;
-// const contacts = require('./db/contacts');
 const program = new Command();
 
-// console.log('started');
-// console.log(__dirname);
 program
   .option("-a, --action <type>", "choose action")
   .option("-i, --id <type>", "user id")
@@ -24,33 +18,26 @@ program.parse(process.argv);
 
 const argv = program.opts();
 
-// console.log('argv: ', argv)
-// contacts.listContacts();
-// contacts.getContactById(rsKkOQUi80UsgVPCcLZZW);
-async function test(){
-    const getById = await contacts.getContactById('rsKkOQUi80UsgVPCcLZZW');
-    console.log('test', getById);
-}
-
-// test();
-
 const invokeAction = async ({action, id, name, email, phone}) => {
     switch(action){
         case 'list':
             const getList = await listContacts();
-            console.log('getContacts');
-            console.log('listContacts length: ', getList.length);
+            console.log('list ', getList);
             break;
         case 'get':
             const getByid = await getContactById(id);
-            console.log('getById', getByid);
+            console.log('get ', getByid);
             break;
         case 'add':
             const contact = await addContact(name, email, phone);
+            const addGetList = await listContacts();
+            console.log('list length after addition', addGetList.length)
             console.log('addContact', contact);
             break;
         case 'remove': 
             const remove = await removeContact(id);
+            const removeGetList = await listContacts();
+            console.log('list length after removal ', removeGetList.length)
             console.log('removeContact: ', remove);
             break;
         default:
@@ -59,4 +46,3 @@ const invokeAction = async ({action, id, name, email, phone}) => {
 }
 
 invokeAction(argv);
-// console.log(contacts.getContactById('rsKkOQUi80UsgVPCcLZZW'));
