@@ -21,7 +21,11 @@ async function listContacts() {
 
 async function getContactById(contactId) {
     const contactsArr = await listContacts();
-    return contactsArr.find(elem => elem.id === contactId);
+    const findContact = contactsArr.find(elem => elem.id === contactId);
+
+    if(findContact === undefined) return console.log('Contact wasn\'t found');
+
+    return findContact;
 }
 
 async function removeContact(contactId) {
@@ -31,6 +35,8 @@ async function removeContact(contactId) {
     const deletedContact = contactsArr.splice(getContactIndex, 1);
 
     await writeFile(contactsPath, JSON.stringify(contactsArr, null, 2));
+
+    if(getContactIndex === -1) return console.log('Id wasn\'t found')
 
     return deletedContact;
 }
